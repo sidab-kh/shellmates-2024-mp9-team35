@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +78,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mp9.wsgi.application'
 
+# Authentication
+# https://www.django-rest-framework.org/api-guide/authentication/
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    ]
+}
+
+AUTH_USER_MODEL = 'authentication.CustomUser'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
