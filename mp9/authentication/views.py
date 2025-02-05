@@ -9,6 +9,29 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
 class UserRegistrationView(generics.CreateAPIView):
+    """
+    A view for handling user registration using Django REST framework.
+    This view extends CreateAPIView to provide user registration functionality.
+    It validates the password against Django's password validation rules and
+    creates a new user if all validations pass.
+    Attributes:
+        queryset: QuerySet of all CustomUser objects
+        serializer_class: UserRegistrationSerializer for data validation and serialization
+    Methods:
+        create(request, *args, **kwargs): Handles the POST request for user registration
+    Returns:
+        Response with:
+        - 201 CREATED: User registration successful
+            {
+                "user": serialized_user_data,
+            }
+        - 400 BAD REQUEST: Password validation failed
+            {
+                "errors": [error_messages]
+            }
+    Raises:
+        ValidationError: If the password doesn't meet Django's validation requirements
+    """
     queryset = CustomUser.objects.all()
     serializer_class = UserRegistrationSerializer
 
@@ -29,12 +52,3 @@ class UserRegistrationView(generics.CreateAPIView):
 
     
 user_registration_view = UserRegistrationView.as_view()
-
-# Only for testing purposes
-class TestView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        return Response({"detail": "Good it is working"}, status=status.HTTP_200_OK)
-
-test_view = TestView.as_view()
